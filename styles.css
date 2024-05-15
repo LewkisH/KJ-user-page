@@ -108,6 +108,16 @@ body{
     color: white;
     background-color: rgb(32, 2, 27);
 }
+
+#logout:hover{
+    filter: invert(0.1);
+    border-style: ridge;
+}
+#logout:active{
+    filter: invert(0.5);
+    border-style: inset;
+}
+
 #profileDiv{
     grid-column:1;
 }
