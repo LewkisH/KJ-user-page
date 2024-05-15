@@ -60,17 +60,24 @@ async function auth(username, password) {
 async function loginSuccess(token) {
     let cont = document.querySelector("#hidcontainer")
     cont.id = "container";
+    const userIdQuery = `query{
+        user{
+          id
+        }
+      }`;
+    let IdData = await Query(userIdQuery, token);
+    const userID = IdData.user[0].id;
 
     const query = `query auditsGiven {
         downTransactions: transaction_aggregate(
-          where: { userId: { _eq: 8508 }, type: { _eq: "down" } }
+          where: { userId: { _eq: ${userID} }, type: { _eq: "down" } }
         ) {
           aggregate {
             count
           }
         }
         upTransactions: transaction_aggregate(
-          where: { userId: { _eq: 8508 }, type: { _eq: "up" } }
+          where: { userId: { _eq: ${userID} }, type: { _eq: "up" } }
         ) {
           aggregate {
             count
@@ -79,7 +86,7 @@ async function loginSuccess(token) {
         event(where: {id: {_eq: 148}}) {
           createdAt
         }
-        user(where: {id: {_eq: 8508}}) {
+        user(where: {id: {_eq: ${userID}}}) {
           id
           email
           login
